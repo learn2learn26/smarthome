@@ -2,6 +2,7 @@
 importScripts('https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js');
 
+
 firebase.initializeApp({
   apiKey: "AIzaSyCriW12_vEx_dwGAj6D99XUg_w1ikdGur4",
   authDomain: "smart-home-c853b.firebaseapp.com",
@@ -10,7 +11,9 @@ firebase.initializeApp({
   storageBucket: "smart-home-c853b.firebasestorage.app",
   messagingSenderId: "932456433882",
   appId: "1:932456433882:web:e93f2806ff8b8090167de3",
+  measurementId: "G-SWN5NQRBVN"
 });
+
 
 const messaging = firebase.messaging();
 
