@@ -253,6 +253,7 @@ document.getElementById("enableNotifications").addEventListener("click", async (
     if (token) {
       status.textContent = "Notifications enabled on this device!";
       console.log("RENO FCM token:", token);
+        alert("Your RENO FCM token:\n\n" + token);
     } else {
       status.textContent = "Could not get an FCM token. Please try again.";
     }
