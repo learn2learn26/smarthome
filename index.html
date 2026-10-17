@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title> | Smart Home</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="app">
+
+        <!-- Header -->
+        <header>
+            <div class="brand">
+                <div class="logo"><img src="https://img.magnific.com/free-vector/bio-friendly-eco-home-symbol-background-with-leaves-design-vector_1017-47001.jpg?t=st=1791477613~exp=1791481213~hmac=8759ce7143751cb3b3d56edbee11a6bce5b911d737d88260da5cb138336e1a53&w=1060" alt="RENO Logo" class="logo"></div>
+
+                <div>
+                    <h1>RENO</h1>
+                    <p>Smart Home Safety</p>
+                </div>
+            </div>
+
+            <div class="connection">
+                <span class="status-dot"></span>
+                <span id="connectionText">Connecting...</span>
+            </div>
+        </header>
+
+        <div id="alertBox" class="alert-box normal">
+    <div class="alert-icon" id="alertIcon">✓</div>
+
+    <div class="alert-content">
+        <div class="alert-title" id="alertTitle">
+            All Systems Normal
+        </div>
+
+        <div class="alert-message" id="alertMessage">
+            No safety alerts detected.
+        </div>
+    </div>
+</div>
+
+        <!-- Welcome -->
+        <section class="welcome">
+            <p class="small-title">LIVE MONITORING</p>
+            <h2>Your home at a glance.</h2>
+            <p class="description">
+                Real-time environmental monitoring powered by RENO.
+            </p>
+        </section>
+
+
+        <!-- Sensor Cards -->
+        <section class="sensor-grid">
+
+            <!-- Temperature -->
+            <div class="card">
+                <div class="card-top">
+                    <div class="icon temperature">°</div>
+                    <span class="label">TEMPERATURE</span>
+                </div>
+
+                <div class="value">
+                    <span id="temperature">--</span>
+                    <span class="unit">°C</span>
+                </div>
+
+                <p class="card-status" id="temperatureStatus">
+                    Waiting for data
+                </p>
+            </div>
+
+
+            <!-- Humidity -->
+            <div class="card">
+                <div class="card-top">
+                    <div class="icon humidity">%</div>
+                    <span class="label">HUMIDITY</span>
+                </div>
+
+                <div class="value">
+                    <span id="humidity">--</span>
+                    <span class="unit">%</span>
+                </div>
+
+                <p class="card-status" id="humidityStatus">
+                    Waiting for data
+                </p>
+            </div>
+
+
+            <!-- Air Quality -->
+            <div class="card">
+                <div class="card-top">
+                    <div class="icon air">AQ</div>
+                    <span class="label">AIR QUALITY</span>
+                </div>
+
+                <div class="value">
+                    <span id="airQuality">--</span>
+                </div>
+
+                <p class="card-status" id="airStatus">
+                    Waiting for data
+                </p>
+            </div>
+
+
+            <!-- System -->
+            <div class="card system-card">
+                <div class="card-top">
+                    <div class="icon system">✓</div>
+                    <span class="label">SYSTEM</span>
+                </div>
+
+                <div class="system-value" id="systemStatus">
+                    Connecting
+                </div>
+
+                <p class="card-status">
+                    Last updated:
+                    <span id="lastUpdated">--</span>
+                </p>
+            </div>
+
+        </section>
+
+
+
+        <!-- RENO LIVE SENSOR GRAPHS -->
+        <section class="graphs-section" id="graphs">
+            <div class="graphs-heading">
+                <div>
+                    <p class="small-title">SENSOR ANALYTICS</p>
+                    <h2>Live sensor graphs</h2>
+                    <p class="graphs-description">Recent readings received during this session.</p>
+                </div>
+                <span class="graphs-live"><span class="graphs-live-dot"></span> LIVE</span>
+            </div>
+            <div class="graphs-grid">
+                <article class="graph-card">
+                    <div class="graph-card-top"><div><h3>Temperature</h3><p>Room temperature</p></div><span class="graph-unit">°C</span></div>
+                    <div class="graph-reading"><strong id="graphTemperatureValue">--</strong><span>°C</span></div>
+                    <canvas id="graphTemperatureCanvas" role="img" aria-label="Temperature history graph"></canvas>
+                    <div class="graph-card-footer"><span>Session history</span><span id="graphTemperatureCount">0 readings</span></div>
+                </article>
+                <article class="graph-card">
+                    <div class="graph-card-top"><div><h3>Humidity</h3><p>Relative humidity</p></div><span class="graph-unit">%</span></div>
+                    <div class="graph-reading"><strong id="graphHumidityValue">--</strong><span>%</span></div>
+                    <canvas id="graphHumidityCanvas" role="img" aria-label="Humidity history graph"></canvas>
+                    <div class="graph-card-footer"><span>Session history</span><span id="graphHumidityCount">0 readings</span></div>
+                </article>
+                <article class="graph-card graph-card-wide">
+                    <div class="graph-card-top"><div><h3>Air quality</h3><p>MQ-135 raw sensor reading</p></div><span class="graph-unit">RAW</span></div>
+                    <div class="graph-reading"><strong id="graphAirQualityValue">--</strong><span>raw value</span></div>
+                    <canvas id="graphAirQualityCanvas" role="img" aria-label="Air quality history graph"></canvas>
+                    <div class="graph-card-footer"><span>Session history</span><span id="graphAirQualityCount">0 readings</span></div>
+                </article>
+            </div>
+            <p class="graphs-note" id="graphsNote">Waiting for sensor readings...</p>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <span>RENO</span>
+            <span>•</span>
+            <span>Real-time monitoring</span>
+        </footer>
+
+    </div>
+
+    <!-- Firebase + Website Logic -->
+   <script type="module">
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+
+    import {
+        getDatabase,
+        ref,
+        onValue
+    } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
+
+
+    // =========================
+    // FIREBASE CONFIGURATION
+    // =========================
+
+    const firebaseConfig = {
+        databaseURL: "https://smart-home-c853b-default-rtdb.firebaseio.com/"
+    };
+
+
+    // =========================
+    // INITIALIZE FIREBASE
+    // =========================
+
+    const app = initializeApp(firebaseConfig);
+
+    const db = getDatabase(app);
+
+    const renoRef = ref(db, "reno");
+
+
+    // =========================
+    // INITIAL STATE
+    // =========================
+
+    let lastDataReceived = null;
+
+
+    // Website starts as DISCONNECTED
+    document.getElementById("connectionText").textContent =
+        "Disconnected";
+
+    document.getElementById("systemStatus").textContent =
+        "Disconnected";
+
+
+
+    // =========================
+    // LIVE SESSION GRAPH LOGIC
+    // =========================
+    const MAX_GRAPH_POINTS = 40;
+    const graphHistory = { temperature: [], humidity: [], airQuality: [] };
+    const graphSettings = {
+        temperature: { canvasId: "graphTemperatureCanvas", valueId: "graphTemperatureValue", countId: "graphTemperatureCount", color: "#35d0ff", digits: 1 },
+        humidity: { canvasId: "graphHumidityCanvas", valueId: "graphHumidityValue", countId: "graphHumidityCount", color: "#b29aff", digits: 1 },
+        airQuality: { canvasId: "graphAirQualityCanvas", valueId: "graphAirQualityValue", countId: "graphAirQualityCount", color: "#46dfab", digits: 0 }
+    };
+    let lastGraphReadingKey = "";
+
+    function drawSensorGraph(key) {
+        const s = graphSettings[key], canvas = document.getElementById(s.canvasId);
+        if (!canvas) return;
+        const rect = canvas.getBoundingClientRect();
+        if (rect.width < 2 || rect.height < 2) return;
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.round(rect.width * dpr);
+        canvas.height = Math.round(rect.height * dpr);
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        const w = rect.width, h = rect.height;
+        ctx.clearRect(0, 0, w, h);
+        const pts = graphHistory[key], left = 36, right = 9, top = 12, bottom = 25;
+        const pw = w - left - right, ph = h - top - bottom;
+        if (pw <= 0 || ph <= 0) return;
+        const vals = pts.map(p => p.value);
+        let min = vals.length ? Math.min(...vals) : 0;
+        let max = vals.length ? Math.max(...vals) : 10;
+        if (min === max) { const pad = Math.max(Math.abs(max) * .12, 1); min -= pad; max += pad; }
+        else { const pad = (max - min) * .16; min -= pad; max += pad; }
+        const x = i => pts.length <= 1 ? left + pw / 2 : left + i / (pts.length - 1) * pw;
+        const y = v => top + (max - v) / (max - min) * ph;
+        ctx.font = "10px Arial, sans-serif"; ctx.textAlign = "right"; ctx.textBaseline = "middle";
+        for (let i = 0; i <= 3; i++) {
+            const gy = top + ph * i / 3, gv = max - (max - min) * i / 3;
+            ctx.beginPath(); ctx.moveTo(left, gy); ctx.lineTo(w - right, gy);
+            ctx.strokeStyle = "rgba(143,162,184,.16)"; ctx.lineWidth = 1; ctx.stroke();
+            ctx.fillStyle = "#8192a8"; ctx.fillText(gv.toFixed(key === "airQuality" ? 0 : 1), left - 5, gy);
+        }
+        if (!pts.length) {
+            ctx.textAlign = "center"; ctx.fillStyle = "#8192a8";
+            ctx.fillText("Waiting for readings...", left + pw / 2, top + ph / 2); return;
+        }
+        if (pts.length > 1) {
+            const grad = ctx.createLinearGradient(0, top, 0, h - bottom);
+            grad.addColorStop(0, s.color + "35"); grad.addColorStop(1, s.color + "00");
+            ctx.beginPath(); ctx.moveTo(x(0), y(pts[0].value));
+            pts.forEach((p, i) => { if (i) ctx.lineTo(x(i), y(p.value)); });
+            ctx.lineTo(x(pts.length - 1), h - bottom); ctx.lineTo(x(0), h - bottom); ctx.closePath();
+            ctx.fillStyle = grad; ctx.fill();
+        }
+        ctx.beginPath();
+        pts.forEach((p, i) => { if (!i) ctx.moveTo(x(i), y(p.value)); else ctx.lineTo(x(i), y(p.value)); });
+        ctx.strokeStyle = s.color; ctx.lineWidth = 2.4; ctx.lineJoin = "round"; ctx.lineCap = "round"; ctx.stroke();
+        const last = pts.length - 1;
+        ctx.beginPath(); ctx.arc(x(last), y(pts[last].value), 4, 0, Math.PI * 2); ctx.fillStyle = s.color; ctx.fill();
+        ctx.font = "9px Arial, sans-serif"; ctx.fillStyle = "#8192a8"; ctx.textBaseline = "alphabetic"; ctx.textAlign = "left";
+        ctx.fillText(pts[0].time, left, h - 5);
+        if (pts.length > 1) { ctx.textAlign = "right"; ctx.fillText(pts[last].time, w - right, h - 5); }
+    }
+
+    function redrawSensorGraphs() {
+        Object.keys(graphSettings).forEach(drawSensorGraph);
+    }
+
+    function addGraphReading(temperature, humidity, airQuality) {
+        const readings = { temperature: Number(temperature), humidity: Number(humidity), airQuality: Number(airQuality) };
+        if (!Object.values(readings).every(Number.isFinite)) {
+            document.getElementById("graphsNote").textContent = "Waiting for valid temperature, humidity and MQ-135 readings.";
+            return;
+        }
+        const key = `${readings.temperature}|${readings.humidity}|${readings.airQuality}`;
+        if (key === lastGraphReadingKey) return;
+        lastGraphReadingKey = key;
+        const time = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
+        Object.keys(readings).forEach(k => {
+            graphHistory[k].push({ value: readings[k], time });
+            if (graphHistory[k].length > MAX_GRAPH_POINTS) graphHistory[k].shift();
+            const s = graphSettings[k], count = graphHistory[k].length;
+            document.getElementById(s.valueId).textContent = readings[k].toFixed(s.digits);
+            document.getElementById(s.countId).textContent = `${count} ${count === 1 ? "reading" : "readings"}`;
+        });
+        document.getElementById("graphsNote").textContent =
+            "Showing up to 40 distinct readings received during this page session. History resets when the page reloads.";
+        requestAnimationFrame(redrawSensorGraphs);
+    }
+    window.addEventListener("resize", () => requestAnimationFrame(redrawSensorGraphs));
+    window.addEventListener("orientationchange", () => setTimeout(() => requestAnimationFrame(redrawSensorGraphs), 120));
+    requestAnimationFrame(redrawSensorGraphs);
+
+    // =========================
+    // READ FIREBASE DATA
+    // =========================
+
+    onValue(renoRef, (snapshot) => {
+
+        const data = snapshot.val();
+
+        if (!data) {
+            return;
+        }
+
+
+        // Read sensor values once for the cards, alerts and graphs.
+        const temperature = Number(data.temperature);
+        const humidity = Number(data.humidity);
+        const airQuality = Number(data.airQuality);
+
+        document.getElementById("temperature").textContent =
+            Number.isFinite(temperature) ? temperature.toFixed(1) + " °C" : "--";
+
+        document.getElementById("humidity").textContent =
+            Number.isFinite(humidity) ? humidity.toFixed(0) + " %" : "--";
+
+        document.getElementById("airQuality").textContent =
+            Number.isFinite(airQuality) ? String(airQuality) : "--";
+
+        addGraphReading(temperature, humidity, airQuality);
+
+
+        // Firebase data successfully received
+        lastDataReceived = Date.now();
+
+
+        // Immediately show Connected
+        document.getElementById("connectionText").textContent =
+            "Connected";
+
+        document.getElementById("systemStatus").textContent =
+            "Connected";
+
+        document.getElementById("lastUpdated").textContent =
+            "Updated just now";
+
+        // alert
+        updateAlerts(temperature, airQuality);
+
+    });
+
+
+    // =========================
+    // CHECK CONNECTION EVERY SECOND
+    // =========================
+
+    setInterval(() => {
+
+        // No data has ever been received
+        if (lastDataReceived === null) {
+
+            document.getElementById("connectionText").textContent =
+                "Disconnected";
+
+            document.getElementById("systemStatus").textContent =
+                "Disconnected";
+
+            return;
+        }
+
+
+        const secondsSinceUpdate =
+            (Date.now() - lastDataReceived) / 1000;
+
+
+        // More than 20 seconds without Firebase update
+        if (secondsSinceUpdate > 20) {
+
+            document.getElementById("connectionText").textContent =
+                "Disconnected";
+
+            document.getElementById("systemStatus").textContent =
+                "Disconnected";
+
+            document.getElementById("lastUpdated").textContent =
+                "Last updated " +
+                formatLastUpdated(lastDataReceived);
+
+        }
+
+    }, 1000);
+
+
+    // =========================
+    // FORMAT TIME
+    // =========================
+
+    function formatLastUpdated(timestamp) {
+
+        const date = new Date(timestamp);
+
+        return date.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        });
+
+    }
+
+    // =========================
+// RENO ALERT SYSTEM
+// =========================
+
+const alertBox = document.getElementById("alertBox");
+const alertIcon = document.getElementById("alertIcon");
+const alertTitle = document.getElementById("alertTitle");
+const alertMessage = document.getElementById("alertMessage");
+
+function showAlert(type, icon, title, message) {
+
+    alertBox.className = "alert-box " + type;
+
+    alertIcon.textContent = icon;
+    alertTitle.textContent = title;
+    alertMessage.textContent = message;
+}
+
+
+function updateAlerts(temperature, airQuality) {
+
+    // Temperature alert
+    if (temperature >= 38) {
+
+        showAlert(
+            "danger",
+            "!",
+            "HIGH TEMPERATURE",
+            `Temperature has reached ${temperature}°C.`
+        );
+
+        return;
+    }
+
+
+    // Temperature warning
+    if (temperature >= 35) {
+
+        showAlert(
+            "warning",
+            "!",
+            "TEMPERATURE WARNING",
+            `Temperature is ${temperature}°C.`
+        );
+
+        return;
+    }
+
+
+    // Air quality danger
+    if (airQuality >= 1500) {
+
+        showAlert(
+            "danger",
+            "⚠️",
+            "POOR AIR QUALITY",
+            `Air quality level is ${airQuality}.`
+        );
+
+        return;
+    }
+
+
+    // Air quality warning
+    if (airQuality >= 1000) {
+
+        showAlert(
+            "warning",
+            "!",
+            "AIR QUALITY WARNING",
+            `Air quality level is ${airQuality}.`
+        );
+
+        return;
+    }
+
+
+    // Everything normal
+    showAlert(
+        "normal",
+        "✓",
+        "ALL SYSTEMS NORMAL",
+        "No safety alerts detected."
+    );
+}
+
+</script>
+</body>
+</html>
+

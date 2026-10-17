@@ -1,0 +1,564 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #07111f;
+    color: #ffffff;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.app {
+    width: min(1100px, 92%);
+    margin: auto;
+    padding: 28px 0;
+}
+
+/* ================= HEADER ================= */
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding-bottom: 35px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    min-width: 0;
+}
+
+.logo {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    border-radius: 14px;
+    background: #19d3c5;
+    color: #07111f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    font-weight: 800;
+}
+
+.brand h1 {
+    font-size: 22px;
+    letter-spacing: 2px;
+}
+
+.brand p {
+    color: #7f91a8;
+    font-size: 12px;
+    margin-top: 3px;
+}
+
+.connection {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #aebdce;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.status-dot {
+    width: 9px;
+    height: 9px;
+    min-width: 9px;
+    border-radius: 50%;
+    background: #19d3c5;
+    box-shadow: 0 0 12px #19d3c5;
+}
+
+/* ================= WELCOME ================= */
+
+.welcome {
+    margin: 25px 0 35px;
+}
+
+.small-title {
+    color: #19d3c5;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+.welcome h2 {
+    font-size: clamp(30px, 5vw, 48px);
+    line-height: 1.1;
+    margin-bottom: 12px;
+}
+
+.description {
+    color: #8192a8;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+/* ================= SENSOR GRID ================= */
+
+.sensor-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+/* ================= CARD ================= */
+
+.card {
+    background: #0d1a2b;
+    border: 1px solid #182b40;
+    border-radius: 17px;
+    padding: 17px;
+    min-height: 145px;
+    transition: 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    border-color: #29445e;
+}
+
+.card-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.icon {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #13263a;
+    color: #19d3c5;
+    font-weight: bold;
+}
+
+.label {
+    color: #7e91a8;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    font-weight: bold;
+}
+
+.value {
+    margin-top: 30px;
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1;
+    word-break: break-word;
+}
+
+.unit {
+    color: #71849a;
+    font-size: 20px;
+    font-weight: normal;
+}
+
+.card-status {
+    margin-top: 10px;
+    color: #71849a;
+    font-size: 13px;
+}
+
+/* ================= SYSTEM CARD ================= */
+
+.system-value {
+    margin-top: 30px;
+    font-size: 30px;
+    font-weight: 700;
+    color: #19d3c5;
+}
+
+/* ================= FOOTER ================= */
+
+footer {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    text-align: center;
+    margin-top: 40px;
+    padding-bottom: 15px;
+    color: #50647b;
+    font-size: 12px;
+}
+
+/* ================= TABLET ================= */
+
+@media (max-width: 800px) {
+
+    .app {
+        width: 90%;
+    }
+
+    .sensor-grid {
+        gap: 14px;
+    }
+
+    .card {
+        padding: 22px;
+    }
+
+    .value {
+        font-size: 42px;
+    }
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 650px) {
+
+    .app {
+        width: 92%;
+        padding: 18px 0 25px;
+    }
+
+    /* Header becomes two rows */
+    header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 15px;
+        padding-bottom: 25px;
+    }
+
+    .brand {
+        width: 100%;
+    }
+
+    .logo {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        border-radius: 12px;
+        font-size: 22px;
+    }
+
+    .brand h1 {
+        font-size: 19px;
+        letter-spacing: 1.5px;
+    }
+
+    .brand p {
+        font-size: 11px;
+    }
+
+    .connection {
+        font-size: 12px;
+        padding-left: 2px;
+    }
+
+    /* Welcome */
+    .welcome {
+        margin: 18px 0 25px;
+    }
+
+    .small-title {
+        font-size: 10px;
+        letter-spacing: 1.7px;
+    }
+
+    .welcome h2 {
+        font-size: 32px;
+        line-height: 1.15;
+    }
+
+    .description {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    /* One card per row */
+    .sensor-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .card {
+        min-height: 155px;
+        padding: 20px;
+        border-radius: 18px;
+    }
+
+    .icon {
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+        border-radius: 11px;
+    }
+
+    .label {
+        font-size: 10px;
+        letter-spacing: 1.3px;
+    }
+
+    .value {
+        margin-top: 25px;
+        font-size: 40px;
+    }
+
+    .unit {
+        font-size: 17px;
+    }
+
+    .card-status {
+        font-size: 12px;
+        margin-top: 8px;
+    }
+
+    .system-value {
+        margin-top: 25px;
+        font-size: 26px;
+    }
+
+    footer {
+        margin-top: 30px;
+        font-size: 11px;
+    }
+}
+
+/* ================= SMALL PHONES ================= */
+
+@media (max-width: 380px) {
+
+    .app {
+        width: 94%;
+    }
+
+    .brand h1 {
+        font-size: 17px;
+    }
+
+    .brand p {
+        font-size: 10px;
+    }
+
+    .welcome h2 {
+        font-size: 28px;
+    }
+
+    .description {
+        font-size: 12px;
+    }
+
+    .card {
+        padding: 17px;
+        min-height: 145px;
+    }
+
+    .value {
+        font-size: 36px;
+    }
+
+    .unit {
+        font-size: 15px;
+    }
+
+    .system-value {
+        font-size: 23px;
+    }
+}
+
+/* =========================
+   RENO LOGO
+   ========================= */
+
+.logo {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    display: block;
+}
+
+
+/* =========================
+   ALERT SYSTEM
+   ========================= */
+
+.alert-box {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+
+    width: 100%;
+    margin: 10px 0 22px;
+    padding: 15px 16px;
+
+    border-radius: 18px;
+    border: 1px solid var(--border);
+
+    transition:
+        background 0.25s ease,
+        border-color 0.25s ease,
+        transform 0.2s ease;
+}
+
+.alert-icon {
+    width: 38px;
+    height: 38px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    font-size: 19px;
+    font-weight: 800;
+}
+
+.alert-title {
+    font-size: 14px;
+    font-weight: 750;
+    margin-bottom: 3px;
+}
+
+.alert-message {
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+
+/* NORMAL */
+
+.alert-box.normal {
+    background: rgba(34, 197, 94, 0.08);
+    border-color: rgba(34, 197, 94, 0.2);
+}
+
+.alert-box.normal .alert-icon {
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ade80;
+}
+
+.alert-box.normal .alert-title {
+    color: #4ade80;
+}
+
+.alert-box.normal .alert-message {
+    color: #9ca3af;
+}
+
+
+/* WARNING */
+
+.alert-box.warning {
+    background: rgba(245, 158, 11, 0.09);
+    border-color: rgba(245, 158, 11, 0.25);
+}
+
+.alert-box.warning .alert-icon {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+}
+
+.alert-box.warning .alert-title {
+    color: #fbbf24;
+}
+
+.alert-box.warning .alert-message {
+    color: #cbd5e1;
+}
+
+
+/* DANGER */
+
+.alert-box.danger {
+    background: rgba(239, 68, 68, 0.10);
+    border-color: rgba(239, 68, 68, 0.28);
+}
+
+.alert-box.danger .alert-icon {
+    background: rgba(239, 68, 68, 0.16);
+    color: #f87171;
+}
+
+.alert-box.danger .alert-title {
+    color: #f87171;
+}
+
+.alert-box.danger .alert-message {
+    color: #cbd5e1;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 380px) {
+
+    .logo {
+        width: 42px;
+        height: 42px;
+    }
+
+    .alert-box {
+        padding: 13px;
+        gap: 10px;
+    }
+
+    .alert-icon {
+        width: 34px;
+        height: 34px;
+        font-size: 17px;
+    }
+
+    .alert-title {
+        font-size: 13px;
+    }
+
+    .alert-message {
+        font-size: 11px;
+    }
+}
+
+
+/* ========================= RENO LIVE SENSOR GRAPHS ========================= */
+.graphs-section { margin-top: 42px; }
+.graphs-heading { display:flex; align-items:flex-end; justify-content:space-between; gap:16px; margin-bottom:18px; }
+.graphs-heading h2 { margin:0 0 8px; font-size:clamp(24px,4vw,32px); letter-spacing:-.7px; }
+.graphs-description { margin:0; color:#8192a8; font-size:13px; line-height:1.5; }
+.graphs-live { display:inline-flex; align-items:center; gap:7px; flex-shrink:0; padding:8px 10px; border:1px solid rgba(25,211,197,.22); border-radius:999px; background:rgba(25,211,197,.07); color:#19d3c5; font-size:10px; font-weight:700; letter-spacing:1px; }
+.graphs-live-dot { width:7px; height:7px; border-radius:50%; background:#19d3c5; box-shadow:0 0 9px rgba(25,211,197,.7); }
+.graphs-grid { display:grid; grid-template-columns:minmax(0,1fr); gap:14px; }
+.graph-card { min-width:0; padding:18px; overflow:hidden; border:1px solid #182b40; border-radius:18px; background:linear-gradient(145deg,#0e1d2e,#0b1827); }
+.graph-card-wide { grid-column:auto; }
+.graph-card-top { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+.graph-card-top h3 { margin:0; font-size:16px; font-weight:700; }
+.graph-card-top p { margin:5px 0 0; color:#8192a8; font-size:12px; }
+.graph-unit { flex-shrink:0; padding:5px 8px; border:1px solid #24394e; border-radius:8px; color:#8da1b7; font-size:11px; }
+.graph-reading { display:flex; align-items:baseline; gap:6px; margin:17px 0 3px; }
+.graph-reading strong { color:#f5f8fc; font-size:clamp(30px,6vw,38px); line-height:1; letter-spacing:-1px; font-variant-numeric:tabular-nums; overflow-wrap:anywhere; }
+.graph-reading span { color:#8192a8; font-size:13px; }
+.graph-card canvas { display:block; width:100%; height:180px; margin-top:7px; }
+.graph-card-footer { display:flex; align-items:center; justify-content:space-between; gap:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,.055); color:#8192a8; font-size:11px; }
+.graph-card-footer span:last-child { text-align:right; font-variant-numeric:tabular-nums; }
+.graphs-note { margin-top:13px; color:#71849a; font-size:12px; line-height:1.5; }
+@media (min-width:760px) {
+    .graphs-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .graph-card-wide { grid-column:1 / -1; }
+    .graph-card { padding:20px; }
+    .graph-card canvas { height:195px; }
+}
+@media (max-width:380px) {
+    .graphs-heading { align-items:flex-start; }
+    .graphs-live { padding:7px 8px; font-size:9px; }
+    .graph-card { padding:15px 12px; }
+    .graph-card canvas { height:165px; }
+    .graph-card-top h3 { font-size:15px; }
+}
+
