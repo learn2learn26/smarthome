@@ -190,11 +190,16 @@
     } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
 
        
-import {
+    import {
   getMessaging,
   getToken,
   onMessage
 } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-messaging.js";
+
+     import {
+  getAuth,
+  signInAnonymously
+} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
 
 
 
@@ -219,6 +224,12 @@ const firebaseConfig = {
     // =========================
 
     const app = initializeApp(firebaseConfig);
+
+    const auth = getAuth(app);
+
+    await signInAnonymously(auth);
+       
+    console.log("RENO signed in anonymously");
        
     const messaging = getMessaging(app);
 
