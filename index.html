@@ -186,7 +186,8 @@
     import {
         getDatabase,
         ref,
-        onValue
+        onValue,
+        set
     } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
 
        
@@ -225,6 +226,8 @@ const firebaseConfig = {
 
     const app = initializeApp(firebaseConfig);
 
+    const db = getDatabase(app);
+
     const auth = getAuth(app);
 
     await signInAnonymously(auth);
@@ -262,12 +265,18 @@ document.getElementById("enableNotifications").addEventListener("click", async (
     });
 
     if (token) {
-      status.textContent = "Notifications enabled on this device!";
-      console.log("RENO FCM token:", token);
-        alert("Your RENO FCM token:\n\n" + token);
-    } else {
-      status.textContent = "Could not get an FCM token. Please try again.";
-    }
+  await set(ref(db, "renoDevices/phone1"), {
+    token: token,
+    platform: "android-chrome",
+    updatedAt: Date.now()
+  });
+
+  status.textContent = "Notifications enabled on this device!";
+  console.log("RENO FCM token saved to Firebase.");
+
+} else {
+  status.textContent = "Could not get an FCM token. Please try again.";
+}
   } catch (error) {
     console.error("RENO notification error:", error);
     status.textContent = "Setup failed: " + error.message;
