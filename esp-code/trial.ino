@@ -13,8 +13,8 @@
 
 // ---------- Firebase ----------
 #define API_KEY "AIzaSyCriW12_vEx_dwGAj6D99XUg_w1ikdGur4"
-#define USER_EMAIL "najeeb.ambayathil@gmail.com"
-#define USER_PASSWORD "ameen@1235"
+#define USER_EMAIL "EMAIL"
+#define USER_PASSWORD "PASSWORD"
 #define DATABASE_URL "https://smart-home-c853b-default-rtdb.firebaseio.com/"
 
 // ---------- DHT11 ----------
