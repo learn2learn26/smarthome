@@ -11,11 +11,6 @@
 
 <body>
 
-<button id="enableNotifications">
-  Enable RENO Notifications
-</button>
-<p id="notificationStatus">Notifications are not enabled yet.</p>
-
     <div class="app">
 
         <!-- Header -->
@@ -49,12 +44,14 @@
     </div>
 </div>
 
+       
+
         <!-- Welcome -->
         <section class="welcome">
             <p class="small-title">LIVE MONITORING</p>
-            <h2>Your home at a glance.</h2>
+            <h2>Dashboard</h2>
             <p class="description">
-                Real-time environmental monitoring powered by RENO.
+                Real-time environmental monitoring
             </p>
         </section>
 
@@ -127,7 +124,6 @@
                 </div>
 
                 <p class="card-status">
-                    Last updated:
                     <span id="lastUpdated">--</span>
                 </p>
             </div>
@@ -136,7 +132,7 @@
 
 
 
-        <!-- RENO LIVE SENSOR GRAPHS -->
+        <!-- AIRSENSE LIVE SENSOR GRAPHS -->
         <section class="graphs-section" id="graphs">
             <div class="graphs-heading">
                 <div>
@@ -169,11 +165,19 @@
             <p class="graphs-note" id="graphsNote">Waiting for sensor readings...</p>
         </section>
 
+         <div class="notification-controls">
+            <button id="enableNotifications" type="button">
+                Enable Notifications
+            </button>
+            <p id="notificationStatus">Notifications are not enabled yet.</p>
+        </div>
+
         <!-- Footer -->
         <footer>
             <span>AIRSENSE</span>
             <span>•</span>
             <span>Real-time monitoring</span>
+            <span>•</span>
             <span>Developed by : Ameen Najeeb</span>
         </footer>
 
@@ -233,7 +237,7 @@ const firebaseConfig = {
 
     await signInAnonymously(auth);
        
-    console.log("RENO signed in anonymously");
+    console.log("AIRSENSE signed in anonymously");
        
     const messaging = getMessaging(app);
 
@@ -273,19 +277,19 @@ document.getElementById("enableNotifications").addEventListener("click", async (
   });
 
   status.textContent = "Notifications enabled on this device!";
-  console.log("RENO FCM token saved to Firebase.");
+  console.log("AIRSENSE FCM token saved to Firebase.");
 
 } else {
   status.textContent = "Could not get an FCM token. Please try again.";
 }
   } catch (error) {
-    console.error("RENO notification error:", error);
+    console.error("AIRSENSE notification error:", error);
     status.textContent = "Setup failed: " + error.message;
   }
 });
 
 onMessage(messaging, (payload) => {
-  const title = payload.notification?.title || "RENO Alert";
+  const title = payload.notification?.title || "AIRSENSE Alert";
   const body = payload.notification?.body || "Check your sensor readings.";
 
   document.getElementById("notificationStatus").textContent =
@@ -304,13 +308,18 @@ onMessage(messaging, (payload) => {
 
     let lastDataReceived = null;
 
+    const connectionIndicator = document.querySelector(".connection");
+    const systemStatus = document.getElementById("systemStatus");
+
+    function setConnectionStatus(status) {
+        document.getElementById("connectionText").textContent = status;
+        connectionIndicator.classList.toggle("disconnected", status === "Disconnected");
+        systemStatus.textContent = status;
+        systemStatus.classList.toggle("disconnected", status === "Disconnected");
+    }
 
     // Website starts as DISCONNECTED
-    document.getElementById("connectionText").textContent =
-        "Disconnected";
-
-    document.getElementById("systemStatus").textContent =
-        "Disconnected";
+    setConnectionStatus("Disconnected");
 
 
 
@@ -442,11 +451,7 @@ onMessage(messaging, (payload) => {
 
 
         // Immediately show Connected
-        document.getElementById("connectionText").textContent =
-            "Connected";
-
-        document.getElementById("systemStatus").textContent =
-            "Connected";
+        setConnectionStatus("Connected");
 
         document.getElementById("lastUpdated").textContent =
             "Updated just now";
@@ -466,11 +471,7 @@ onMessage(messaging, (payload) => {
         // No data has ever been received
         if (lastDataReceived === null) {
 
-            document.getElementById("connectionText").textContent =
-                "Disconnected";
-
-            document.getElementById("systemStatus").textContent =
-                "Disconnected";
+            setConnectionStatus("Disconnected");
 
             return;
         }
@@ -483,11 +484,7 @@ onMessage(messaging, (payload) => {
         // More than 20 seconds without Firebase update
         if (secondsSinceUpdate > 20) {
 
-            document.getElementById("connectionText").textContent =
-                "Disconnected";
-
-            document.getElementById("systemStatus").textContent =
-                "Disconnected";
+            setConnectionStatus("Disconnected");
 
             document.getElementById("lastUpdated").textContent =
                 "Last updated " +
@@ -515,7 +512,7 @@ onMessage(messaging, (payload) => {
     }
 
     // =========================
-// RENO ALERT SYSTEM
+// AIRSENSE ALERT SYSTEM
 // =========================
 
 const alertBox = document.getElementById("alertBox");
