@@ -435,10 +435,10 @@ onMessage(messaging, (payload) => {
         const airQuality = Number(data.airQuality);
 
         document.getElementById("temperature").textContent =
-            Number.isFinite(temperature) ? temperature.toFixed(1) + " °C" : "--";
+            Number.isFinite(temperature) ? temperature.toFixed(1): "--";
 
         document.getElementById("humidity").textContent =
-            Number.isFinite(humidity) ? humidity.toFixed(0) + " %" : "--";
+            Number.isFinite(humidity) ? humidity.toFixed(0) : "--";
 
         document.getElementById("airQuality").textContent =
             Number.isFinite(airQuality) ? String(airQuality) : "--";
