@@ -8,19 +8,20 @@
 #include <FirebaseClient.h>
 
 // ---------- Wi-Fi ----------
-#define WIFI_SSID "ssid"
-#define WIFI_PASSWORD "password"
+#define WIFI_SSID "MOTO-G35"
+#define WIFI_PASSWORD "alifmoto"
 
 // ---------- Firebase ----------
 #define API_KEY "AIzaSyCriW12_vEx_dwGAj6D99XUg_w1ikdGur4"
 #define USER_EMAIL "EMAIL"
-#define USER_PASSWORD "PASSWORD"
+#define USER_PASSWORD "PASSWAORD"
 #define DATABASE_URL "https://smart-home-c853b-default-rtdb.firebaseio.com/"
 
 // ---------- DHT11 ----------
 #define DHTPIN 4
 #define DHTTYPE DHT11
 #define MQ 34
+#define BUZZER 18
 
 DHT dht(DHTPIN, DHTTYPE);
 
@@ -75,6 +76,8 @@ void setup()
 
   dht.begin();
   pinMode(MQ, INPUT);
+  pinMode(BUZZER, OUTPUT);
+  pinMode(2, OUTPUT);
 
   Serial.println();
   Serial.println("===== RENO =====");
@@ -91,6 +94,7 @@ void setup()
     delay(500);
   }
 
+  digitalWrite(2, LOW);
   Serial.println();
   Serial.println("Wi-Fi connected!");
 
@@ -133,9 +137,17 @@ void loop()
 
     float temperature = dht.readTemperature();
     float humidity = dht.readHumidity();
+    int airQuality = analogRead(MQ);
 
-    // Temporary dummy air quality
-      int airQuality = analogRead(MQ);
+    if (airQuality > 750 )
+    {
+      Serial.println("Alert Gas Value reached threshold");
+      digitalWrite(BUZZER, LOW);
+    }
+    else 
+    {
+      digitalWrite(BUZZER, HIGH);
+    }
 
     if (isnan(temperature) || isnan(humidity))
     {
@@ -178,19 +190,13 @@ void loop()
         true
       );
 
-      Serial.println("Data sent!");
+      Serial.print("Data sent!");
     }
   }
   else
   {
     Serial.println("Waiting for Firebase...");
   }
-
-  if  (WiFi.status() != WL_CONNECTED)
-  { digitalWrite(2, HIGH); }
-  else {
-    digitalWrite(2, LOW);
-  }
-
-  delay(5000);
 }
+
+  
