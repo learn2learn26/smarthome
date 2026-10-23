@@ -197,6 +197,7 @@ void loop()
   {
     Serial.println("Waiting for Firebase...");
   }
+  delay(5000);
 }
 
   
